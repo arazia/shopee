@@ -1,6 +1,9 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const puppeteer = require('puppeteer')
+// const axios = require('axios');
+// const cheerio = require('cheerio');
+// const puppeteer = require('puppeteer');
+import axios from 'axios';
+import cheerio from 'cheerio';
+import puppeteer from 'puppeteer';
 
 const getColesSearch = async (search) => {
         const info = [];
