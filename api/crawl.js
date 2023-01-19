@@ -29,7 +29,7 @@ const getColesSearch = async (search) => {
 const getWooliesSearch = async (search) => {
     const info = [];
     const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         defaultViewport: null,
         ignoreHTTPSErrors: true
     });
@@ -74,8 +74,8 @@ const getWooliesSearch = async (search) => {
             return [...document.querySelectorAll(dataSelector)].map(product => {
                 try {
                     return {
-                        title: product?.querySelector('.shelfProductTile-descriptionLink').textContent,
-                        price: Number(product?.querySelector('.price-dollars').textContent) + +((0.01*product?.querySelector('.price-cents').textContent).toFixed(2))
+                        title: product.querySelector('.shelfProductTile-descriptionLink').textContent,
+                        price: Number(product.querySelector('.price-dollars').textContent) + +((0.01*product.querySelector('.price-cents').textContent).toFixed(2))
                     };
                 } catch (e) {
                     console.log(e);

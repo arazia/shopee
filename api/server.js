@@ -19,7 +19,7 @@ app.post('/api/product', (req, res) => {
     const product = req.body.product;
     const coles = crawl.getColesSearch(product);
     const woolworths = crawl.getWooliesSearch(product);
-    info = [...coles, ...woolworths];
+    products = [...coles, ...woolworths];
     res.json();
 });
 
