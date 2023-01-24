@@ -3,11 +3,11 @@ import {SearchBar, enquireProduct, getProducts} from './product'
 
 const App = () => {
     
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState({});
     const [products, setProducts] = useState([]);
 
     const askQuery = (e) => {
-        enquireProduct(this.state.query).then(response => {
+        enquireProduct(query.name).then(response => {
             console.log(response);
         });
     }
@@ -19,6 +19,7 @@ const App = () => {
         });
     }
 
+    // idk why but this will just break rendering even though an effect hook should be used
     // useEffect(() => {
     //     getProducts.then(products => {
     //         console.log(products);
@@ -29,10 +30,10 @@ const App = () => {
 
 
     const onChangeForm = (e) => {
-        let query = this.state.query;
         if (e.target.name == 'productQuery') {
-            query = e.target.value;
+            query.name = e.target.value;
         }
+        console.log(query);
         setQuery(query);
     }
 
@@ -40,15 +41,14 @@ const App = () => {
     return (
         <div>
             <SearchBar 
-                query={query}
                 onChangeForm={onChangeForm}
                 enquireProduct={askQuery} 
             />
-            {/* <ul>
+            <ul>
                 {products.map((product) => {
                     <li>{product.title} : {product.price}</li>
                 })}
-            </ul> */}
+            </ul>
         </div>
        
     );

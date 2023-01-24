@@ -6,28 +6,34 @@ import bodyParser from 'body-parser';
 
 const app = express(), port = 3080;
 
-const products = [];
+let products = [];
 
 app.use(bodyParser.json());
 
 
 app.get('/api/products', (req, res) => {
+    console.log('api/products called');
     res.json(products);
 });
 
 app.post('/api/product', (req, res) => {
-    const product = req.body.product;
-    const coles = crawl.getColesSearch(product);
-    const woolworths = crawl.getWooliesSearch(product);
-    products = [...coles, ...woolworths];
-    res.json();
+    const product = req.body.query;
+    products = crawler(product);
+    res.json('products updated');
 });
 
 app.get('/', (req, res) => {
     res.send('GET Request Recieved');
 })
 
-app.listen(port, () => {
+app.listen(port, () => {    
     console.log(`Listening on port::${port}`);
 });
 
+const crawler = async (product) => {
+    const coles = await crawl.getColesSearch(product);
+    const woolworths = await crawl.getWooliesSearch(product);
+    const products = [...coles, ...woolworths];
+    console.log(products);
+    return products;
+}

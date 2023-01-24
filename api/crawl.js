@@ -6,24 +6,23 @@ import cheerio from 'cheerio';
 import puppeteer from 'puppeteer';
 
 const getColesSearch = async (search) => {
-        const info = [];
-        const { data } = await axios.get('https://www.coles.com.au/search?q='+search);
+    const info = [];
+    const { data } = await axios.get('https://www.coles.com.au/search?q='+search);
+    const $ = cheerio.load(data);
+    const noPages = $('.coles-targeting-PaginationPaginationUl li:nth-last-child(2) > a').text();
+    for (let x = 1; x <= noPages; ++x) {
+        console.log('https://www.coles.com.au/search?q='+search+'&page='+x);
+        const { data } = await axios.get('https://www.coles.com.au/search?q='+search+'&page='+x);
         const $ = cheerio.load(data);
-        const noPages = $('.coles-targeting-PaginationPaginationUl li:nth-last-child(2) > a').text();
-        for (let x = 1; x <= noPages; ++x) {
-            console.log('https://www.coles.com.au/search?q='+search+'&page='+x);
-            const { data } = await axios.get('https://www.coles.com.au/search?q='+search+'&page='+x);
-            const $ = cheerio.load(data);
-            const productCollection = $('section[data-testid="product-tile"]');
-            productCollection.each((index, element) => {
-                const product = {title: '', price: ''};  
-                product.title = $(element).find('.product__title').text();
-                product.price = $(element).find('.price__value').first().text();
-                info.push(product);
-            });
-        }
-        
-        return info;
+        const productCollection = $('section[data-testid="product-tile"]');
+        productCollection.each((index, element) => {
+            const product = {title: '', price: ''};  
+            product.title = $(element).find('.product__title').text();
+            product.price = $(element).find('.price__value').first().text();
+            info.push(product);
+        });
+    }
+    return info;
 }
 
 const getWooliesSearch = async (search) => {
@@ -91,7 +90,7 @@ const getWooliesSearch = async (search) => {
     return info;
 }
 
-
+// todo : fix when there is only one page
 
 // I don't know why but I cannot for the life of me find out why this doesn't work. Either axios is getting the wrong html or my css selector for cheerio is incorrect (how??)
 // noPages will not display through console.log(), or debugging.

@@ -1,5 +1,5 @@
 
-const SearchBar = ({onChangeForm, enquireProduct}) => {
+const SearchBar = ({onChangeForm, enquireProduct, getProducts}) => {
         return (
         <form>
                 <label htmlFor="header-search">
