@@ -9,7 +9,14 @@ const getColesSearch = async (search) => {
     const info = [];
     const { data } = await axios.get('https://www.coles.com.au/search?q='+search);
     const $ = cheerio.load(data);
-    const noPages = $('.coles-targeting-PaginationPaginationUl li:nth-last-child(2) > a').text();
+    const PageSelector = $('.coles-targeting-PaginationPaginationUl li:nth-last-child(2) > a').text();
+    console.log(PageSelector);
+
+    let noPages = 1;
+    if (PageSelector != '') {
+        noPages = PageSelector;
+    }
+    
     for (let x = 1; x <= noPages; ++x) {
         console.log('https://www.coles.com.au/search?q='+search+'&page='+x);
         const { data } = await axios.get('https://www.coles.com.au/search?q='+search+'&page='+x);
@@ -30,7 +37,10 @@ const getWooliesSearch = async (search) => {
     const browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
-        ignoreHTTPSErrors: true
+        ignoreHTTPSErrors: true,
+        args: [
+            '--window-size=1200,800'
+        ]
     });
 
     const page = await browser.newPage();
@@ -45,19 +55,20 @@ const getWooliesSearch = async (search) => {
 
 
     const pageSelector = 'div.paging-section > a:nth-last-child(2)';
+    let noPages = 1;
     try {
         await page.waitForSelector(pageSelector, {timeout: 10000});
+        noPages = await page.evaluate(pageSelector => {
+            return document.querySelector(pageSelector).textContent;  
+        }, pageSelector);
     } catch (e) {
         console.log(e);
-        return;
     }
 
-    const noPages = await page.evaluate(pageSelector => {
-        return document.querySelector(pageSelector).textContent;  
-        }, pageSelector);
-
+    
+    
     const url = await page.url();
-
+    console.log(url);
     for (let x = 1; x <= noPages; ++x) {
         await page.goto(url+'&pageNumber='+x);
         console.log(url+'&pageNumber='+x);
