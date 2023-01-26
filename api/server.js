@@ -18,7 +18,7 @@ app.get('/api/products', (req, res) => {
 
 app.post('/api/product', (req, res) => {
     const product = req.body.query;
-    products = crawler(product);
+    crawler(product);
     res.json('products updated');
 });
 
@@ -27,13 +27,12 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {    
-    console.log(`Listening on port::${port}`);
+    console.log(`Listening on port::${port}`);  
 });
 
 const crawler = async (product) => {
     const coles = await crawl.getColesSearch(product);
     const woolworths = await crawl.getWooliesSearch(product);
-    const products = [...coles, ...woolworths];
-    console.log(products);
-    return products;
+    products = [...coles, ...woolworths];
 }
+

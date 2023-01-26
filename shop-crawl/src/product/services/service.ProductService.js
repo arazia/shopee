@@ -1,6 +1,7 @@
 export async function getProducts() {
-        const res = await fetch('/api/products');
-        return await res.json();
+        const res = await fetch(`/api/products`);
+        const data = await res.json();
+        return data;
 }
 
 export async function enquireProduct(data) {

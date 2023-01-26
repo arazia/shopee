@@ -13,7 +13,7 @@ const App = () => {
     }
 
     const getQuery = () => {
-        getProducts.then(products => {
+        getProducts().then(products => {
             console.log(products);
             setProducts(products);
         });
@@ -30,7 +30,7 @@ const App = () => {
 
 
     const onChangeForm = (e) => {
-        if (e.target.name == 'productQuery') {
+        if (e.target.name === 'productQuery') {
             query.name = e.target.value;
         }
         console.log(query);
@@ -42,11 +42,15 @@ const App = () => {
         <div>
             <SearchBar 
                 onChangeForm={onChangeForm}
-                enquireProduct={askQuery} 
+                enquireProduct={askQuery}
+                getProducts={getQuery} 
             />
             <ul>
+                <button type='button' onClick= {(e) => getQuery()}>test</button>         
                 {products.map((product) => {
-                    <li>{product.title} : {product.price}</li>
+                    if (product != null) {
+                        <li>{product.title} : {product.price}</li>
+                    }
                 })}
             </ul>
         </div>

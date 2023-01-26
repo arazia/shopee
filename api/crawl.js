@@ -4,6 +4,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import puppeteer from 'puppeteer';
+// default timeouts are 10000ms, change these at your own discretion if you feel they are too long/short
 
 const getColesSearch = async (search) => {
     const info = [];
