@@ -86,7 +86,7 @@ const getWooliesSearch = async (search) => {
                 try {
                     return {
                         title: product.querySelector('.shelfProductTile-descriptionLink').textContent,
-                        price: Number(product.querySelector('.price-dollars').textContent) + +((0.01*product.querySelector('.price-cents').textContent).toFixed(2))
+                        price: '$'+Number(product.querySelector('.price-dollars').textContent) + +((0.01*product.querySelector('.price-cents').textContent).toFixed(2))
                     };
                 } catch (e) {
                     console.log(e);

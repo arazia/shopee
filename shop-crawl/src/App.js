@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {SearchBar, enquireProduct, getProducts} from './product'
+import React, {useState} from "react";
+import {SearchBar, enquireProduct, getProducts, ProductTable} from './product'
 
 const App = () => {
     
@@ -9,6 +9,7 @@ const App = () => {
     const askQuery = (e) => {
         enquireProduct(query.name).then(response => {
             console.log(response);
+            getQuery();
         });
     }
 
@@ -43,15 +44,9 @@ const App = () => {
             <SearchBar 
                 onChangeForm={onChangeForm}
                 enquireProduct={askQuery}
-                getProducts={getQuery} 
             />
             <ul>
-                <button type='button' onClick= {(e) => getQuery()}>test</button>         
-                {products.map((product) => {
-                    if (product != null) {
-                        <li>{product.title} : {product.price}</li>
-                    }
-                })}
+                <ProductTable products={products}/>
             </ul>
         </div>
        

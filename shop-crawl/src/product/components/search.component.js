@@ -1,5 +1,6 @@
+import React from 'react'
 
-const SearchBar = ({onChangeForm, enquireProduct, getProducts}) => {
+const SearchBar = ({onChangeForm, enquireProduct}) => {
         return (
         <form>
                 <label htmlFor="header-search">
@@ -12,7 +13,7 @@ const SearchBar = ({onChangeForm, enquireProduct, getProducts}) => {
                         placeholder="Search Products"
                         name="productQuery"
                 />   
-                <button type='button' onClick= {(e) => enquireProduct().then(() => getProducts())}>Submit</button>         
+                <button type='button' onClick= {(e) => {enquireProduct();}}>Submit</button>         
         </form>
         )
         
