@@ -39,9 +39,9 @@ const getWooliesSearch = async (search) => {
         headless: false,
         defaultViewport: null,
         ignoreHTTPSErrors: true,
-        args: [
-            '--window-size=1200,800'
-        ]
+        // args: [
+        //     '--window-size=1200,800'
+        // ]
     });
 
     const page = await browser.newPage();
@@ -81,12 +81,12 @@ const getWooliesSearch = async (search) => {
             continue;
         }
 
-        const data = await page.evaluate((dataSelector) => {
+        const data = await page.evaluate((dataSelector) => { 
             return [...document.querySelectorAll(dataSelector)].map(product => {
                 try {
                     return {
                         title: product.querySelector('.shelfProductTile-descriptionLink').textContent,
-                        price: '$'+Number(product.querySelector('.price-dollars').textContent) + +((0.01*product.querySelector('.price-cents').textContent).toFixed(2))
+                        price: '$'+(Number(product.querySelector('.price-dollars').textContent) + +((0.01*product.querySelector('.price-cents').textContent).toFixed(2)))
                     };
                 } catch (e) {
                     console.log(e);
@@ -137,9 +137,5 @@ const getWooliesSearch = async (search) => {
 // }
     
 
-// searchTerm = 'apples';
-
-// getColesSearch(searchTerm);
-// getWooliesSearch(searchTerm);
 
 export default {getColesSearch, getWooliesSearch};

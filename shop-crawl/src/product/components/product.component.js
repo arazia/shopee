@@ -7,7 +7,7 @@ const ProductTable = ({products}) => {
 
     const helperPrice = (price) => {
         if (price === "") {
-            return "Unavaialble"
+            return "Unavailable"
         }
         return price;
     }
