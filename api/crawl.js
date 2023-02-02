@@ -75,7 +75,7 @@ const getWooliesSearch = async (search) => {
         console.log(url+'&pageNumber='+x);
         const dataSelector = 'div.shelfProductTile-information'
         try {
-            await page.waitForSelector(dataSelector, {timeout: 10000});
+            await page.waitForSelector(dataSelector, {timeout: 2000});
         } catch (e) {
             console.log(e);
             continue;
