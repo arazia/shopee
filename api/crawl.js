@@ -4,7 +4,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 import puppeteer from 'puppeteer';
-// default timeouts are 10000ms, change these at your own discretion if you feel they are too long/short
+// default timeouts are 5000ms, change these at your own discretion if you feel they are too long/short
 
 const getColesSearch = async (search) => {
     const info = [];
@@ -27,6 +27,7 @@ const getColesSearch = async (search) => {
             const product = {title: '', price: ''};  
             product.title = $(element).find('.product__title').text();
             product.price = $(element).find('.price__value').first().text();
+            product.link = 'https://www.coles.com.au' + $(element).find('.product__link').first().attr('href')
             info.push(product);
         });
     }
@@ -58,7 +59,7 @@ const getWooliesSearch = async (search) => {
     const pageSelector = 'div.paging-section > a:nth-last-child(2)';
     let noPages = 1;
     try {
-        await page.waitForSelector(pageSelector, {timeout: 10000});
+        await page.waitForSelector(pageSelector, {timeout: 5000});
         noPages = await page.evaluate(pageSelector => {
             return document.querySelector(pageSelector).textContent;  
         }, pageSelector);
@@ -70,12 +71,13 @@ const getWooliesSearch = async (search) => {
     
     const url = await page.url();
     console.log(url);
+    console.log(noPages);
     for (let x = 1; x <= noPages; ++x) {
         await page.goto(url+'&pageNumber='+x);
         console.log(url+'&pageNumber='+x);
-        const dataSelector = 'div.shelfProductTile-information'
+        const dataSelector = 'section.product-tile-v2'
         try {
-            await page.waitForSelector(dataSelector, {timeout: 2000});
+            await page.waitForSelector(dataSelector, {timeout: 5000});
         } catch (e) {
             console.log(e);
             continue;
@@ -85,8 +87,9 @@ const getWooliesSearch = async (search) => {
             return [...document.querySelectorAll(dataSelector)].map(product => {
                 try {
                     return {
-                        title: product.querySelector('.shelfProductTile-descriptionLink').textContent,
-                        price: '$'+(Number(product.querySelector('.price-dollars').textContent) + +((0.01*product.querySelector('.price-cents').textContent).toFixed(2)))
+                        title: product.querySelector('a.product-title-link').textContent,
+                        price: product.querySelector('div.product-tile-price > div.primary').textContent,
+                        link:  'https://www.woolworths.com.au' + product.querySelector('a.product-title-link').getAttribute('href')
                     };
                 } catch (e) {
                     console.log(e);

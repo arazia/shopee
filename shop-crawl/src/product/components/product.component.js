@@ -16,6 +16,7 @@ const priceSort = (rowA, rowB) => {
     return 0;
 }
 
+
 const columns = [
     {
         name: 'Title',
@@ -57,28 +58,16 @@ const ProductTable = ({products}) => {
     //     )
     // })
 
-    const data = products.map(({title, price}) => ({
-        title:title, price:helperPrice(price)
+    const data = products.filter(product => product).map(({title, price, link}) => ({
+        title:title, price:helperPrice(price), link:link
     }))
 
     return(
-        // <div>
-        //     <h2>Products</h2>
-        //     <table>
-        //         <thead>
-        //         <tr>
-        //             <th>Title</th>
-        //             <th>Price</th>
-        //         </tr>
-        //         </thead>
-        //         <tbody>
-        //             {productTable}
-        //         </tbody>
-        //     </table>
-        // </div>
         <DataTable
             columns={columns}
             data={data}
+            pagination
+            onRowClicked={(row) => {window.open(row.link)}}
         />
     );
 };
